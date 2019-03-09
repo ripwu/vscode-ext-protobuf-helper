@@ -1,11 +1,11 @@
 {
 	"name": "protobuf-helper",
 	"displayName": "Protobuf Helper",
-	"description": "Reset filed ID with auto-increment number.",
-	"version": "0.2.0",
+	"description": "Reset filed ID with auto-increment number starting from 1.",
+	"version": "0.2.2",
 	"publisher": "ripwu",
 	"engines": {
-		"vscode": "^1.32.0"
+		"vscode": "^1.30.0"
 	},
 	"categories": [
 		"Other"

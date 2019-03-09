@@ -1,15 +1,14 @@
 # protobuf-helper README
 
-Reset filed ID with auto-increment number.
+Reset filed ID with auto-increment number starting from 1.
 
 # How to Use
 
-Goto command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and typing `Reset Field ID`.
+Open proto file, then goto command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and typing `Reset Field ID`.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
+Make sure that there is no Protobuf syntax error in your code before you run the command.
 
 ## Extension Settings
 
