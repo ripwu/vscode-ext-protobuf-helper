@@ -10,6 +10,10 @@ export function activate(context: vscode.ExtensionContext) {
 			let s_cmt = false;
 			let m_cmt = false;
 
+			let last_word1 = "";
+			let last_word2 = "";
+			let cur_word = "";
+
 			let message_stack = [];
 			let message_begin = false;
 
@@ -34,6 +38,12 @@ export function activate(context: vscode.ExtensionContext) {
 				} else if (char0 === '/' && char1 === '*') {
 					m_cmt = true;
 					next_char = true;
+				} else if ((char0 === ' ') || (char0 === '\t')) {
+					if (cur_word !== "") {
+						last_word2 = last_word1;
+						last_word1 = cur_word;
+						cur_word = "";
+					}
 				} else {
 					if (char0 === '{') {
 						id_stack.push(next_id);
@@ -41,22 +51,30 @@ export function activate(context: vscode.ExtensionContext) {
 
 						message_begin = true;
 						message_stack.push(message_begin);
+
+						if (last_word2 === "enum") {
+							next_id = 0;
+						}
 					} else if (char0 === '}') {
 						next_id = id_stack[id_stack.length-1];
 						id_stack.pop();
 
 						message_begin = message_stack[message_stack.length-1];
 						message_stack.pop();
-					} else if (message_begin) {
-						if (char0 === '=') {
-							id_begin = true;
-						} else if (id_begin && char0 !== ';') {
-							continue;
-						} else if (id_begin && char0 === ';') {
-							result += " " + next_id + ";";
-							id_begin = false;
-							next_id++;
-							continue;
+					} else {
+						cur_word += char0;
+
+						if (message_begin) {
+							if (char0 === '=') {
+								id_begin = true;
+							} else if (id_begin && char0 !== ';') {
+								continue;
+							} else if (id_begin && char0 === ';') {
+								result += next_id + ";";
+								id_begin = false;
+								next_id++;
+								continue;
+							}
 						}
 					}
 				}

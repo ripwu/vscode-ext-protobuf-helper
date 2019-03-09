@@ -1,8 +1,8 @@
 {
 	"name": "protobuf-helper",
 	"displayName": "Protobuf Helper",
-	"description": "Reset filed ID with auto-increment number starting from 1.",
-	"version": "0.2.3",
+	"description": "Reset filed ID with auto-increment number starting from 1(for message)/0(for enum).",
+	"version": "0.2.4",
 	"publisher": "ripwu",
 	"engines": {
 		"vscode": "^1.30.0"

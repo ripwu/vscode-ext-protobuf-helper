@@ -9,9 +9,9 @@ message record_item
     uint32 day_time = 3;
 
     enum RecordType {
-        DAY = 3;
+        DAY = 0;
         WEEK = 1;
-        MONTH = 4;
+        MONTH = 3;
         YEAR = 2;
     }
 
@@ -20,24 +20,24 @@ message record_item
 
     message NestedMsg1 {
         message NestedMsg2 {
-            repeated string snippets = 3;
+            repeated string enum = 3;
 
             message NestedMsg3 {
-                repeated string snippets = 3;
-                required string url = 1;
+                repeated string string = 3;
+                string url = 1;
             }
 
-            required NestedMsg3 msg3 = 1;
+            NestedMsg3 msg3 = 1;
 
             enum MsgType {
-                JSON = 3;
+                JSON = 0;
                 XML = 1;
-                PROTOBUF = 4;
+                PROTOBUF = 3;
                 BINARY = 2;
             }
 
             MsgType msg_type = 4;
-            optional string title = 2;
+            string title = 2;
         }
 
         repeated NestedMsg2 result = 1;
