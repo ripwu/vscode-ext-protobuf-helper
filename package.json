@@ -4,7 +4,7 @@
 	"description": "Reset filed ID with auto-increment number starting from 1(for message)/0(for enum).",
 	"version": "0.2.5",
 	"publisher": "ripwu",
-	"icon": "./images/icon.png",
+	"icon": "images/icon.png",
 	"engines": {
 		"vscode": "^1.30.0"
 	},
