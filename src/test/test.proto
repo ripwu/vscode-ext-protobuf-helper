@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package pb.countrecorder;
+
+message record_item
+{
+    uint32 record_id = 1;
+    int32 total_num = 4;
+    uint32 day_time = 3;
+
+    enum RecordType {
+        DAY = 3;
+        WEEK = 1;
+        MONTH = 4;
+        YEAR = 2;
+    }
+
+    RecordType record_type = 6;
+    int32 day_type = 8;
+
+    message NestedMsg1 {
+        message NestedMsg2 {
+            repeated string snippets = 3;
+
+            message NestedMsg3 {
+                repeated string snippets = 3;
+                required string url = 1;
+            }
+
+            required NestedMsg3 msg3 = 1;
+
+            enum MsgType {
+                JSON = 3;
+                XML = 1;
+                PROTOBUF = 4;
+                BINARY = 2;
+            }
+
+            MsgType msg_type = 4;
+            optional string title = 2;
+        }
+
+        repeated NestedMsg2 result = 1;
+    }
+
+    NestedMsg1 nest_msg1 = 2;
+    int32 week_num = 7;
+    int32 week_type = 5;
+}
+
+message RecordListParam
+{
+    repeated record_item record_list = 1;
+}
