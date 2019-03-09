@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "protobuf-helper" is now active!');
 
-	let generator = vscode.commands.registerTextEditorCommand('extension.resetFieldID', (editor, editorEdit) => {
-		function GenerateFieldID(text: string) {
+	let disposable = vscode.commands.registerTextEditorCommand('extension.resetFieldID', (editor, editorEdit) => {
+		function resetFieldID(text: string) {
 			let result = "";
 			let s_cmt = false;
 			let m_cmt = false;
@@ -94,11 +94,11 @@ export function activate(context: vscode.ExtensionContext) {
 			editor.document.positionAt(0),
 			editor.document.positionAt(fullText.length)
 		);
-		editor.edit(edit => edit.replace(fullRange, GenerateFieldID(fullText)));
+		editor.edit(edit => edit.replace(fullRange, resetFieldID(fullText)));
 		//editor.document.save();
 	});
 
-	context.subscriptions.push(generator);
+	context.subscriptions.push(disposable);
 }
 
 export function deactivate() {}

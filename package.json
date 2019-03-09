@@ -2,7 +2,7 @@
 	"name": "protobuf-helper",
 	"displayName": "Protobuf Helper",
 	"description": "Reset filed ID with auto-increment number starting from 1(for message)/0(for enum).",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"publisher": "ripwu",
 	"icon": "images/icon.png",
 	"engines": {
