@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "protobuf-helper" is now active!');
 
-	//enum not supported
 	let generator = vscode.commands.registerTextEditorCommand('extension.resetFieldID', (editor, editorEdit) => {
 		function GenerateFieldID(text: string) {
 			let result = "";
@@ -67,12 +66,13 @@ export function activate(context: vscode.ExtensionContext) {
 						if (message_begin) {
 							if (char0 === '=') {
 								id_begin = true;
-							} else if (id_begin && char0 !== ';') {
-								continue;
-							} else if (id_begin && char0 === ';') {
-								result += next_id + ";";
-								id_begin = false;
-								next_id++;
+							} else if (id_begin) {
+								if (char0 === ';') {
+									result += next_id + ";";
+									id_begin = false;
+									next_id++;
+								}
+
 								continue;
 							}
 						}
