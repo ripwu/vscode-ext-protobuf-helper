@@ -2,13 +2,15 @@
 	"name": "protobuf-helper",
 	"displayName": "Protobuf Helper",
 	"description": "Reset filed ID with auto-increment number starting from 1.",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"publisher": "ripwu",
 	"engines": {
 		"vscode": "^1.30.0"
 	},
 	"categories": [
-		"Other"
+        "Programming Languages",
+        "Formatters",
+        "Other"
 	],
 	"activationEvents": [
 		"onCommand:extension.resetFieldID"
