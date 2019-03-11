@@ -1,54 +1,90 @@
+// exmaples taken from https://github.com/zxh0/vscode-proto3
+// do not support reserved id and alias id
 syntax = "proto3";
 
 package pb.countrecorder;
 
-message record_item
+option optimize_for = CODE_SIZE;
+option deprecated = true;
+
+message RecordManager//line comment
 {
-    uint32 record_id = 1;
-    int32 total_num = 4;
-    uint32 day_time = 3;
+    message RecordItem {
+        option message_set_wire_format = false;
 
-    enum RecordType {
-        DAY = 0;
-        WEEK = 1;
-        MONTH = 3;
-        YEAR = 2;
-    }
+        uint32 record_id = 10; /* block comment */
+        uint32 day_num = 3;
+        uint32 week_num = 7;
+        uint32 month_num = 1;
 
-    RecordType record_type = 6;
-    int32 day_type = 8;
+        /*
+        * block comment */
 
-    message NestedMsg1 {
-        message NestedMsg2 {
-            repeated string enum = 3;
-
-            message NestedMsg3 {
-                repeated string string = 3;
-                string url = 1;
-            }
-
-            NestedMsg3 msg3 = 1;
-
-            enum MsgType {
-                JSON = 0;
-                XML = 1;
-                PROTOBUF = 3;
-                BINARY = 2;
-            }
-
-            MsgType msg_type = 4;
-            string title = 2;
+        enum ResetType {
+            DAY = 0;
+            WEEK = 1;
+            MONTH = 11;
+            OTHER = 14;
         }
 
-        repeated NestedMsg2 result = 1;
+        message NestedMsg1 {
+            message NestedMsg2 {
+                bytes msg = 4;
+
+                enum NestedMsgType
+                {
+                    JSON = 0;
+                    XML = 3;
+                    PROTOBUF = 7;
+                    BINARY = 2;
+                }
+
+                NestedMsgType msg_type = 2;
+            }
+
+            repeated NestedMsg2 nested_msg2 = 1;
+        }
+
+        ResetType reset_type = 6 [deprecated=true];
+        NestedMsg1 nested_msg1 = 11;
     }
 
-    NestedMsg1 nest_msg1 = 2;
-    int32 week_num = 7;
-    int32 week_type = 5;
+    option no_standard_descriptor_accessor = false;
+    option deprecated = false;
+
+    repeated RecordItem record_list = 7 [ packed = true ] ;
+    map<uint32, string> record_name_map = 3 [lazy=false];
+    map<uint32, uint32> record_stat_map = 1 [deprecated=true, lazy = false]  ;
 }
 
-message RecordListParam
-{
-    repeated record_item record_list = 1;
+import "google/protobuf/empty.proto";
+import "google/api.proto";
+
+message SomeMsg {}
+message GetRecordRequest{
+    uint32 record_id = 1;
+}
+message SetRecordRequest{
+    uint32 record_id = 4;
+    uint32 add_num = 2;
+}
+message DelRecordRequest{
+    uint32 record_id = 5;
+}
+service RecordService {
+    rpc None(google.protobuf.Empty) returns (SomeMsg);
+    rpc Get(GetRecordRequest) returns (SomeMsg) {
+        option (google.api.http) = {
+            get: "/v1/{project=protobuf-helper//records/}"
+        };
+    }
+    rpc Set(SetRecordRequest) returns (SomeMsg) {
+        option (google.api.http) = {
+            post: "/v1/{project=protobuf-helper/*}/records"
+            body: ""
+        };
+    }
+    rpc Del(DelRecordRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = { delete: "/v2beta1/{project=protobuf-helper/*/records/*}" };
+    }
 }
