@@ -8,9 +8,9 @@ Sometimes you don't really care about the Protobuf filed ID, but things keep get
 
 Open proto file and goto command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac), then run `Reset Field ID`.
 
-## TODO
+## Warning
 
-Works with ID reserved / alias.
+Reserved fields and enum alias not supported.
 
 ## Extension Settings
 
