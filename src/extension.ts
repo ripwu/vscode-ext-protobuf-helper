@@ -23,6 +23,8 @@ export function activate(context: vscode.ExtensionContext) {
 		let id_set = false;
 		let next_id = 1;
 
+		let string_begin = false;
+
 		for (var i = 0; i < text.length; i++) {
 			let char0 = text.charAt(i);
 			let char1 = (i+1 < text.length) ? text.charAt(i+1) : '\0';
@@ -34,13 +36,16 @@ export function activate(context: vscode.ExtensionContext) {
 				m_cmt = false;
 				next_char = true;
 			} else if (s_cmt || m_cmt) {
+			} else if (string_begin && char0 !== "\"") {
 			} else if (char0 === '/' && char1 === '/') {
 				s_cmt = true;
 				next_char = true;
 			} else if (char0 === '/' && char1 === '*') {
 				m_cmt = true;
 				next_char = true;
-			} else if ((char0 === ' ') || (char0 === '\t')) {
+			} else if (char0 === "\"") {
+				string_begin = !string_begin;
+			} else if (char0 === ' ' || char0 === '\t') {
 				if (cur_word !== "") {
 					last_word2 = last_word1;
 					last_word1 = cur_word;

@@ -1,5 +1,3 @@
-// exmaples taken from https://github.com/zxh0/vscode-proto3
-// do not support reserved id and alias id
 syntax = "proto3";
 
 package pb.countrecorder;
