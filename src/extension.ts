@@ -32,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let id_begin = false;
 		let id_option_begin = false;
 		let id_set = false;
+		let oneof_flag = false;
 		let next_id = 1;
 
 		let string_begin = false;
@@ -76,8 +77,10 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			} else {
 				if (char0 === '{') {
-					id_stack.push(next_id);
-					next_id = 1;
+					if (last_word2 !== "oneof"){
+						id_stack.push(next_id);
+						next_id = 1;
+					} else oneof_flag = true;
 
 					message_begin = true;
 					message_stack.push(message_begin);
@@ -86,8 +89,10 @@ export function activate(context: vscode.ExtensionContext) {
 						next_id = 0;
 					}
 				} else if (char0 === '}') {
-					next_id = id_stack[id_stack.length-1];
-					id_stack.pop();
+					if (!oneof_flag){
+						next_id = id_stack[id_stack.length-1];
+						id_stack.pop();
+					}
 
 					message_begin = message_stack[message_stack.length-1];
 					message_stack.pop();
