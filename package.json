@@ -2,8 +2,8 @@
 	"name": "protobuf-helper",
 	"displayName": "Protobuf Helper",
 	"description": "Reset filed ID with auto-increment number starting from 1(for message)/0(for enum).",
-	"version": "0.2.9",
-	"publisher": "ripwu",
+	"version": "0.2.10",
+	"publisher": "huang12zheng",
 	"icon": "images/icon.png",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -41,6 +41,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ripwu/vscode-ext-protobuf-helper.git"
+		"url": "https://github.com/huang12zheng/vscode-ext-protobuf-helper.git"
 	}
 }

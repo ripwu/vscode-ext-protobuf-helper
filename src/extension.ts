@@ -2,7 +2,18 @@ import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "protobuf-helper" is now active!');
+	function format(text: string) {
+		let result = "";
+		for (var i = 0; i < text.length; i++) {
+			let char0 = text.charAt(i);
+			let char1 = (i+1 < text.length) ? text.charAt(i+1) : '\0';
+			result += char0;
+			if (char1 === '{' && !(char0=== ' ' || char0=== '\t' ||char0=== '\n' ))
+				result+=' ';
 
+		}
+		return result;
+	}
 	function resetFieldID(text: string) {
 		let result = "";
 		let s_cmt = false;
@@ -21,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let id_begin = false;
 		let id_option_begin = false;
 		let id_set = false;
+		let oneof_flag = false;
 		let next_id = 1;
 
 		let string_begin = false;
@@ -45,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
 				next_char = true;
 			} else if (char0 === "\"") {
 				string_begin = !string_begin;
-			} else if (char0 === ' ' || char0 === '\t') {
+			} else if (char0 === ' ' || char0 === '\t' || char0 === '\n') {
 				if (cur_word !== "") {
 					last_word2 = last_word1;
 					last_word1 = cur_word;
@@ -65,8 +77,10 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			} else {
 				if (char0 === '{') {
-					id_stack.push(next_id);
-					next_id = 1;
+					if (last_word2 !== "oneof"){
+						id_stack.push(next_id);
+						next_id = 1;
+					} else oneof_flag = true;
 
 					message_begin = true;
 					message_stack.push(message_begin);
@@ -75,8 +89,10 @@ export function activate(context: vscode.ExtensionContext) {
 						next_id = 0;
 					}
 				} else if (char0 === '}') {
-					next_id = id_stack[id_stack.length-1];
-					id_stack.pop();
+					if (!oneof_flag){
+						next_id = id_stack[id_stack.length-1];
+						id_stack.pop();
+					}
 
 					message_begin = message_stack[message_stack.length-1];
 					message_stack.pop();
@@ -127,7 +143,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let disposable = vscode.commands.registerTextEditorCommand('extension.resetFieldID', (editor, editorEdit) => {
 		let fullText = editor.document.getText();
-		let newText = resetFieldID(fullText);
+		let newText = resetFieldID(format(fullText));
 
 		const fullRange = new vscode.Range(
 			editor.document.positionAt(0),
